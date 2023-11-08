@@ -389,17 +389,6 @@ func GetDesignDocument(client *CouchDBClient, docname string) (*DesignDocument, 
 	return doc, err // @error If there's an error it is automatically returned, client must error handle
 }
 
-// url := "http://localhost:5984/{DB_NAME}"
-func getDBInfo(client *CouchDBClient) (*DatabaseInfo, error) {
-	db := &DatabaseInfo{}
-	r, err := http.Get(client.DatabaseURL.String())
-	if err != nil || r.StatusCode != 200 {
-		return db, err
-	}
-	err = json.NewDecoder(r.Body).Decode(&db)
-	return db, err // @error If there's an error it is automatically returned, client must error handle
-}
-
 // url := "http://localhost:5984/_all_dbs"
 func GetAllDBs(client *CouchDBClient) ([]string, error) {
 	var dbs []string
@@ -410,6 +399,17 @@ func GetAllDBs(client *CouchDBClient) ([]string, error) {
 	}
 	err = json.NewDecoder(r.Body).Decode(&dbs)
 	return dbs, err // @error If there's an error it is automatically returned, client must error handle
+}
+
+// url := "http://localhost:5984/{DB_NAME}"
+func getDBInfo(client *CouchDBClient) (*DatabaseInfo, error) {
+	db := &DatabaseInfo{}
+	r, err := http.Get(client.DatabaseURL.String())
+	if err != nil || r.StatusCode != 200 {
+		return db, err
+	}
+	err = json.NewDecoder(r.Body).Decode(&db)
+	return db, err // @error If there's an error it is automatically returned, client must error handle
 }
 
 func ConnectToDB(client *CouchDBClient, dbname string) (*DatabaseInfo, error) {
